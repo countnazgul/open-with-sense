@@ -23,8 +23,6 @@ namespace OpenWithSense
             string currentExeName = System.AppDomain.CurrentDomain.FriendlyName;
 #endif
 
-
-
             IHub hub;
             ILocation location = Qlik.Engine.Location.FromUri("ws://127.0.0.1:4848");
             location.AsDirectConnectionToPersonalEdition();
@@ -103,7 +101,16 @@ namespace OpenWithSense
                             IApp app = hub.OpenApp(appName);
                             Console.WriteLine("App is open ...");
                             string script = app.GetScript();
-                            app.SetScript(script + Environment.NewLine + Environment.NewLine + "Load 1 as test AutoGenerate(1);");
+
+                            string addScript = "TempTable:" + Environment.NewLine +
+                                                "Load" + Environment.NewLine +
+                                                "   *" + Environment.NewLine +
+                                                "FROM" + Environment.NewLine +
+                                                @"    ["+ args[0] +"] (txt)" + Environment.NewLine +
+                                                "; " + Environment.NewLine;
+
+
+                            app.SetScript(script + Environment.NewLine + Environment.NewLine + addScript);
                             Console.WriteLine("New script is added ...");
                             Console.WriteLine("Reload started...");
                             app.DoReload();
