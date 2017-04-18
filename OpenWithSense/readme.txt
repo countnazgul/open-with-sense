@@ -1,0 +1,1 @@
+﻿Please visit https://github.com/countnazgul/open-with-sense for more info

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 using Qlik.Engine;
-using Qlik.Sense;
+//using Qlik.Sense;
 using System.Diagnostics;
 using System.Net;
 using Qlik.Sense.Client;
@@ -52,6 +52,13 @@ namespace OpenWithSense
                 using (hub = location.Hub())
                 {
                     version = hub.ProductVersion();
+
+                    if (version.Substring(0,3) != "3.2")
+                    {
+                        Console.WriteLine("I'm sory but only QS version 3.2.x is supported at the moment. Press Enter to close.");
+                        Console.ReadLine();
+                        Environment.Exit(0);
+                    }
                 }
             } catch (Exception ex)
             {
@@ -282,7 +289,7 @@ namespace OpenWithSense
                     case 4:
                         {
                             Console.Clear();
-                            Process.Start("");
+                            Process.Start("https://github.com/countnazgul/open-with-sense/blob/master/README.md");
                             Environment.Exit(0);
                             break;
                         }
@@ -333,10 +340,11 @@ namespace OpenWithSense
             return a;
         }
 
-        // Function thah actually copy the selected qvf file to QS Apps folder
+        // Function that actually copy the selected qvf file to QS Apps folder
         static public void CopyQVF(string source, string destination, bool overwrite)
         {
             Console.WriteLine("File copy started ...");
+            Process.Start("http://localhost:4848/sense/app/" + WebUtility.UrlEncode(destination).Replace("+", "%20"));
             File.Copy(source, destination, overwrite);
             Console.Clear();
             Console.WriteLine("File copy has finished");
